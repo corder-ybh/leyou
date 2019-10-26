@@ -28,34 +28,35 @@
         <router-view></router-view>
     </div>
 </div>
-<script src="./node_modules/vue/dist/vue.js"></script>
-<script src="./node_modules/vue-router/dist/vue-router.js"></script>
-<script src="./user/login.js"></script>
-<script src="./user/register.js"></script>
-<script type="text/javascript">
-    // 2.0版本，使用vue-router
-    // 创建VueRouter对象
-    const router = new VueRouter({
-        routes: [ //编写路由规则
-            {
-                path: "/login",  // 请求路径
-                component: loginForm // 组件名称
-            },
-            {
-                path: "/register",
-                component: registerForm
-            }
-        ]
-    });
+<!--<script src="./dist/build.js"></script>-->
+<!--<script src="./node_modules/vue/dist/vue.js"></script>-->
+<!--<script src="./node_modules/vue-router/dist/vue-router.js"></script>-->
+<!--<script src="./user/login.js"></script>-->
+<!--<script src="./user/register.js"></script>-->
+<!--<script type="text/javascript">-->
+    <!--// 2.0版本，使用vue-router-->
+    <!--// 创建VueRouter对象-->
+    <!--const router = new VueRouter({-->
+        <!--routes: [ //编写路由规则-->
+            <!--{-->
+                <!--path: "/login",  // 请求路径-->
+                <!--component: loginForm // 组件名称-->
+            <!--},-->
+            <!--{-->
+                <!--path: "/register",-->
+                <!--component: registerForm-->
+            <!--}-->
+        <!--]-->
+    <!--});-->
 
-    var vm = new Vue({
-        el : "#app",
-        components: {
-            loginForm,
-            registerForm,
-        },
-        router
-    });
-</script>
+    <!--var vm = new Vue({-->
+        <!--el : "#app",-->
+        <!--components: {-->
+            <!--loginForm,-->
+            <!--registerForm,-->
+        <!--},-->
+        <!--router-->
+    <!--});-->
+<!--</script>-->
 </body>
 </html>

@@ -5,4 +5,5 @@ const loginForm = {
         '用户名: <input type="text"> <br>' +
         '密码: <input type="password"> <br>' +
         '</div>'
-}
+};
+export default loginForm;

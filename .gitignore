@@ -24,3 +24,5 @@ hs_err_pid*
 .idea/
 *target*
 web-test/node_modules/
+web-test/vue-cli-test/build/
+web-test/dist/
