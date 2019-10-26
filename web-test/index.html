@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Test</title>
+</head>
+<body>
+<div id="app">
+    <!--<span>登陆</span>-->
+    <!--<span>注册</span>-->
+    <!--2.0版本-->
+    <span><router-link to="/login">登陆</router-link></span>
+    <span><router-link to="/register">注册</router-link></span>
+    <hr/>
+    <div>
+        <!--<loginForm></loginForm>-->
+        <!--
+            疑问：为什么不采用上面的写法？
+            由于html是大小写不敏感的，如果采用上面的写法，则被认为是<loginform></loginform>
+            所以，如果是驼峰形式的组件，需要把驼峰转化为“-”的形式
+         -->
+        <!--<login-form></login-form>-->
+        <!--<register-form></register-form>-->
+        <!--2.0版本-->
+        <!--vue-router的锚点-->
+        <!-- - 通过`<router-view>`来指定一个锚点，当路由的路径匹配时，vue-router会自动把对应组件放到锚点位置进行渲染-->
+        <!-- - 通过`<router-link>`指定一个跳转链接，当点击时，会触发vue-router的路由功能，路径中的hash值会随之改变-->
+        <router-view></router-view>
+    </div>
+</div>
+<script src="./node_modules/vue/dist/vue.js"></script>
+<script src="./node_modules/vue-router/dist/vue-router.js"></script>
+<script src="./user/login.js"></script>
+<script src="./user/register.js"></script>
+<script type="text/javascript">
+    // 2.0版本，使用vue-router
+    // 创建VueRouter对象
+    const router = new VueRouter({
+        routes: [ //编写路由规则
+            {
+                path: "/login",  // 请求路径
+                component: loginForm // 组件名称
+            },
+            {
+                path: "/register",
+                component: registerForm
+            }
+        ]
+    });
+
+    var vm = new Vue({
+        el : "#app",
+        components: {
+            loginForm,
+            registerForm,
+        },
+        router
+    });
+</script>
+</body>
+</html>
