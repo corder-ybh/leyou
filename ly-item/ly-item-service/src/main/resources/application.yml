@@ -4,7 +4,7 @@ spring:
   application:
     name: item-service
   datasource:
-    url: jdbc:mysql://66.66.66.66:3306/leyou
+    url: jdbc:mysql://66.66.66.66:3306/leyou?characterEncoding=utf-8
     username: root
     password: root
     kikari:
