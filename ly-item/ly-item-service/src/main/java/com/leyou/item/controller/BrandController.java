@@ -42,4 +42,12 @@ public class BrandController {
         this.brandService.saveBrand(brand, cids);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
+
+    @PutMapping
+    public ResponseEntity<Void> updateBrand(Brand brand, @RequestParam("cids") List<Long> cids) {
+        // @todo 更新的逻辑待完善
+        return new ResponseEntity<>(HttpStatus.OK);
+//        this.brandService.updateBrand(brand, cids);
+//        return new ResponseEntity<>(HttpStatus.)
+    }
 }

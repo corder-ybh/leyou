@@ -26,3 +26,4 @@ hs_err_pid*
 web-test/node_modules/
 web-test/vue-cli-test/build/
 web-test/dist/
+data/tmp/
