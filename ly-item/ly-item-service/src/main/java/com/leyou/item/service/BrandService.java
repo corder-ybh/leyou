@@ -58,4 +58,13 @@ public class BrandService {
             this.brandMapper.insertCategoryBrand(cid, brand.getId());
         }
     }
+
+    /**
+     * 根据分类id获取品牌
+     * @param cid
+     * @return
+     */
+    public List<Brand> queryBrandBayCategory(Long cid) {
+        return this.brandMapper.queryByCategoryId(cid);
+    }
 }

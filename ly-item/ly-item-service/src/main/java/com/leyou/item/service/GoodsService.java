@@ -3,18 +3,17 @@ package com.leyou.item.service;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.leyou.common.pojo.PageResult;
-import com.leyou.item.mapper.BrandMapper;
-import com.leyou.item.mapper.SpuMapper;
-import com.leyou.item.pojo.Brand;
-import com.leyou.item.pojo.Spu;
-import com.leyou.item.pojo.SpuBo;
+import com.leyou.item.mapper.*;
+import com.leyou.item.pojo.*;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import tk.mybatis.mapper.entity.Example;
 
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -28,6 +27,15 @@ public class GoodsService {
 
     @Autowired
     private BrandMapper brandMapper;
+
+    @Autowired
+    private SpuDetailMapper spuDetailMapper;
+
+    @Autowired
+    private SkuMapper skuMapper;
+
+    @Autowired
+    private StockMapper stockMapper;
 
     public PageResult<SpuBo> querySpuByPageAndSort(Integer page, Integer rows, Boolean saleable, String key) {
         // 1、查询SPU
@@ -63,5 +71,76 @@ public class GoodsService {
             return spuBo;
         }).collect(Collectors.toList());
         return new PageResult<>(pageInfo.getTotal(), list);
+    }
+
+    /**
+     * 这里逻辑比较复杂，除了要对SPU新增以外，还要对SpuDetail、Sku、Stock进行保存
+     * @param spu
+     */
+    @Transactional
+    public void saveGoods(SpuBo spu) {
+        // 保存spu
+        spu.setSaleable(true);
+        spu.setValid(true);
+        spu.setCreateTime(new Date());
+        spu.setLastUpdateTime(spu.getCreateTime());
+        this.spuMapper.insert(spu);
+
+        // 保存spu详情
+        spu.getSpuDetail().setSpuId(spu.getId());
+        this.spuDetailMapper.insert(spu.getSpuDetail());
+
+        // 保存sku和库存信息
+        saveSkuAndStock(spu.getSkus(), spu.getId());
+    }
+
+    /**
+     * 保存sku和库存信息
+     * @param skus
+     * @param spuId
+     */
+    private void saveSkuAndStock(List<Sku> skus, Long spuId) {
+        for (Sku sku: skus) {
+            if (!sku.getEnable()) {
+                continue;
+            }
+            // 保存sku
+            sku.setSpuId(spuId);
+            // 默认不参与促销
+            sku.setCreateTime(new Date());
+            sku.setLastUpdateTime(sku.getCreateTime());
+            this.skuMapper.insert(sku);
+
+            // 保存库存信息
+            Stock stock = new Stock();
+            stock.setSkuId(sku.getId());
+            stock.setStock(sku.getStock());
+            this.stockMapper.insert(stock);
+        }
+    }
+
+    /**
+     * 获取spu详情
+     * @param id
+     * @return
+     */
+    public SpuDetail querySpuDetailById(Long id) {
+        return this.spuDetailMapper.selectByPrimaryKey(id);
+    }
+
+    /**
+     * 查询spu
+     * @param spuId
+     * @return
+     */
+    public List<Sku> querySkuBySpuId(Long spuId) {
+        // 查询sku
+        Sku record = new Sku();
+        record.setSpuId(spuId);
+        List<Sku> skus = this.skuMapper.select(record);
+        for (Sku sku : skus) {
+            sku.setStock(this.stockMapper.selectByPrimaryKey(sku.getId()).getStock());
+        }
+        return skus;
     }
 }

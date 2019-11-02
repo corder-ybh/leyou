@@ -10,7 +10,7 @@ public class SpuDetail {
     private String description; // 商品描述
     private String specTemplate; // 商品特殊规格的名称以及可选值模板
     private String Specifications; // 商品的全规格属性
-    private String pakcingList; // 包装清单
+    private String packingList; // 包装清单
     private String afterService; // 售后服务
 
     public Long getSpuId() {
@@ -45,12 +45,12 @@ public class SpuDetail {
         Specifications = specifications;
     }
 
-    public String getPakcingList() {
-        return pakcingList;
+    public String getPackingList() {
+        return packingList;
     }
 
-    public void setPakcingList(String pakcingList) {
-        this.pakcingList = pakcingList;
+    public void setPackingList(String packingList) {
+        this.packingList = packingList;
     }
 
     public String getAfterService() {
