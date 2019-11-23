@@ -18,14 +18,17 @@ zuul:
   retryable: true
   routes:
     item-service: /item/** #将商品微服务映射到/item/**
+    user-service: /user/**
   ignored-services:
     - upload-service # 忽略upload-service 服务
+# 貌似没有生效，需要仔细研究下
 ribbon:
   ConnectTimeout: 250 # 连接超时时间(ms)
   ReadTimeout: 2000 # 通信超时时间(ms)
   OkToRetryOnAllOperations: true # 是否对所有操作重试
   MaxAutoRetriesNextServer: 1 # 同一服务不同实例的重试次数
   MaxAutoRetries: 1 # 同一实例的重试次数
+
 hystrix:
   command:
     default:

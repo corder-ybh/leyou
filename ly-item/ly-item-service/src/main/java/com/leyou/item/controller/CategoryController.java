@@ -1,5 +1,6 @@
 package com.leyou.item.controller;
 
+import com.leyou.item.pojo.CategoryTree;
 import com.leyou.item.service.CategoryService;
 import com.leyou.item.pojo.Category;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -69,4 +71,65 @@ public class CategoryController {
         }
         return ResponseEntity.ok(list);
     }
+
+    @GetMapping("tree")
+    public ResponseEntity<List<CategoryTree>> getCategoryTree() {
+        try {
+            List<Category> categoryList = this.categoryService.queryCategoryList();
+            if (CollectionUtils.isEmpty(categoryList)) {
+                return ResponseEntity.notFound().build();
+            }
+            List<CategoryTree> categoryTreeList = new ArrayList<CategoryTree>();
+            for (Category category : categoryList) {
+                CategoryTree categoryTree = new CategoryTree();
+                categoryTree.setId(category.getId());
+                categoryTree.setIsParent(category.getIsParent());
+                categoryTree.setName(category.getName());
+                categoryTree.setParentId(category.getParentId());
+                categoryTree.setSort(category.getSort());
+                categoryTreeList.add(categoryTree);
+            }
+            List<CategoryTree> categoryTrees = parseCategoryTree(categoryTreeList);
+            return ResponseEntity.ok(categoryTrees);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+    }
+
+    public List<CategoryTree> parseCategoryTree(List<CategoryTree> list) {
+        List<CategoryTree> result = new ArrayList<CategoryTree>();
+
+        // 获取第一级节点
+        for (CategoryTree category : list) {
+            if (0 == category.getParentId()) {
+                result.add(category);
+            }
+        }
+
+        // 递归获取子节点
+        for (CategoryTree parent : list) {
+            parent = recursiveTree(parent, list);
+        }
+        return result;
+    }
+
+    public static CategoryTree recursiveTree(CategoryTree parent, List<CategoryTree> list) {
+        for (CategoryTree category : list) {
+            try {
+                if (parent.getId() == category.getParentId()) {
+                    category = recursiveTree(category, list);
+                    parent.getChildren().add(category);
+                }
+            } catch (Exception e) {
+                System.out.println(parent.getName());
+                System.out.println(category.getName());
+//                System.out.println(category);
+                e.printStackTrace();
+                System.exit(0);
+            }
+        }
+        return parent;
+    }
+
 }

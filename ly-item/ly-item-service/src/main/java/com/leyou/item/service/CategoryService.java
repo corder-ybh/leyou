@@ -2,6 +2,7 @@ package com.leyou.item.service;
 
 import com.leyou.item.mapper.CategoryMapper;
 import com.leyou.item.pojo.Category;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,6 +14,15 @@ public class CategoryService {
     @Autowired
     private CategoryMapper categoryMapper;
 
+    public List<Category> queryCategoryList() {
+        return this.categoryMapper.selectAll();
+    }
+
+    /**
+     * 根据parent_id 查询分类信息
+     * @param pid
+     * @return
+     */
     public List<Category> queryCategoryListByParentId(Long pid) {
         Category record = new Category();
         record.setParentId(pid);
