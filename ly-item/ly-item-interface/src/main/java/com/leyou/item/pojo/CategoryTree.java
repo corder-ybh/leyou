@@ -1,5 +1,6 @@
 package com.leyou.item.pojo;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class CategoryTree extends Category{
@@ -14,4 +15,7 @@ public class CategoryTree extends Category{
         this.children = children;
     }
 
+    public CategoryTree() {
+        children = new ArrayList<CategoryTree>();
+    }
 }
