@@ -1,5 +1,6 @@
 package com.leyou.item.controller;
 
+import com.alibaba.fastjson.JSON;
 import com.leyou.item.pojo.CategoryTree;
 import com.leyou.item.service.CategoryService;
 import com.leyou.item.pojo.Category;
@@ -73,7 +74,7 @@ public class CategoryController {
     }
 
     @GetMapping("tree")
-    public ResponseEntity<List<CategoryTree>> getCategoryTree() {
+    public ResponseEntity<String> getCategoryTree() {
         try {
             List<Category> categoryList = this.categoryService.queryCategoryList();
             if (CollectionUtils.isEmpty(categoryList)) {
@@ -90,7 +91,10 @@ public class CategoryController {
                 categoryTreeList.add(categoryTree);
             }
             List<CategoryTree> categoryTrees = parseCategoryTree(categoryTreeList);
-            return ResponseEntity.ok(categoryTrees);
+            int code = 20000;
+            String tree = JSON.toJSON(categoryTrees).toString();
+            String res = "{\"code\":" + code + ", \"tree\":" + tree + "}";
+            return ResponseEntity.ok(res);
         } catch (Exception e) {
             e.printStackTrace();
         }
