@@ -46,7 +46,7 @@ public class BrandService {
         // 查询
         Page<Brand> pageInfo = (Page<Brand>) brandMapper.selectByExample(example);
         // 返回结果
-        return new PageResult<>(pageInfo.getTotal(), pageInfo);
+        return new PageResult<>(pageInfo.getTotal(), pageInfo, 20000, rows, page);
     }
 
     @Transactional
@@ -66,5 +66,15 @@ public class BrandService {
      */
     public List<Brand> queryBrandBayCategory(Long cid) {
         return this.brandMapper.queryByCategoryId(cid);
+    }
+
+    /**
+     * 品牌删除
+     * @param bid
+     */
+    @Transactional(rollbackFor = Exception.class)
+    public void deleteBrandById(Long bid) {
+        this.brandMapper.deleteByPrimaryKey(bid);
+        this.brandMapper.deleteByBrandIdInCategoryBrand(bid);
     }
 }

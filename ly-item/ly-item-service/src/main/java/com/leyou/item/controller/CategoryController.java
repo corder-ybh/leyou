@@ -93,7 +93,7 @@ public class CategoryController {
             List<CategoryTree> categoryTrees = parseCategoryTree(categoryTreeList);
             int code = 20000;
             String tree = JSON.toJSON(categoryTrees).toString();
-            String res = "{\"code\":" + code + ", \"tree\":" + tree + "}";
+            String res = "{\"code\":" + code + ", \"item\":" + tree + "}";
             return ResponseEntity.ok(res);
         } catch (Exception e) {
             e.printStackTrace();

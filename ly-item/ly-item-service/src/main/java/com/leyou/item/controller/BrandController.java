@@ -3,6 +3,7 @@ package com.leyou.item.controller;
 import com.leyou.common.pojo.PageResult;
 import com.leyou.item.pojo.Brand;
 import com.leyou.item.service.BrandService;
+import org.apache.ibatis.annotations.Delete;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -58,5 +59,18 @@ public class BrandController {
             new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         return ResponseEntity.ok(list);
+    }
+
+    /**
+     * 删除品牌
+     * @param bid
+     * @return
+     */
+    @DeleteMapping("bid/{bid}")
+    public ResponseEntity<String> deleteBrand(@PathVariable("bid") Long bid) {
+        System.out.println("删除品牌");
+        this.brandService.deleteBrandById(bid);
+        String res = "{ \"code\":20000}";
+        return ResponseEntity.ok(res);
     }
 }

@@ -1,6 +1,7 @@
 package com.leyou.item.mapper;
 
 import com.leyou.item.pojo.Brand;
+import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
@@ -24,5 +25,8 @@ public interface BrandMapper extends Mapper<Brand> {
             "LEFT JOIN tb_category_brand cb ON b.id = cb.brand_id " +
             "WHERE cb.category_id = #{cid}")
     List<Brand> queryByCategoryId(Long cid);
+
+    @Delete("DELETE FROM tb_category WHERE id = #{bid}")
+    void deleteByBrandIdInCategoryBrand(@Param("bid") Long bid);
 }
 

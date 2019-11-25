@@ -70,7 +70,7 @@ public class GoodsService {
             spuBo.setBname(brand.getName());
             return spuBo;
         }).collect(Collectors.toList());
-        return new PageResult<>(pageInfo.getTotal(), list);
+        return new PageResult<>(pageInfo.getTotal(), list, 20000, rows, page);
     }
 
     /**
